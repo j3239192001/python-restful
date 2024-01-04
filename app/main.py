@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, request
 import threading
 
 app = Flask(__name__)
@@ -10,7 +10,7 @@ lock = threading.Lock()
 @app.route('/tasks', methods=['GET'])
 def getTaskList():
     resp = {'result': taskList}
-    return jsonify(resp)
+    return resp, {'Content-Type': 'application/json'}
 
 @app.route('/task', methods=['POST'])
 def addTask():
@@ -21,7 +21,7 @@ def addTask():
     global taskList
     taskList.append(newTask)
     resp = {'result': newTask}
-    return jsonify(resp)
+    return resp
 
 @app.route('/task/<int:id>', methods=['PUT'])
 def updateTask(id):
