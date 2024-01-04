@@ -15,13 +15,17 @@ def getTaskList():
 @app.route('/task', methods=['POST'])
 def addTask():
     req = request.json
-    name = req.get('name')
-    newId = genUniqueId()
-    newTask = {'name': name, 'status': 0, 'id': newId}
-    global taskList
-    taskList.append(newTask)
-    resp = {'result': newTask}
-    return resp
+    if 'name' in req:
+        name = req['name']
+        newId = genUniqueId()
+        newTask = {'name': name, 'status': 0, 'id': newId}
+        global taskList
+        taskList.append(newTask)
+        resp = {'result': newTask}
+        return resp
+    else:
+        resp = {'result': 'Field \'name\' is required.'}
+        return resp
 
 @app.route('/task/<int:id>', methods=['PUT'])
 def updateTask(id):
